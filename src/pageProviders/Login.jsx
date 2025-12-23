@@ -20,7 +20,7 @@ const Login = (props) => {
           ? JSON.parse(locationSearch.redirectLocationSearch)
           : locationSearch,
         pathname: locationSearch.redirectPathname
-          || `${pagesURLs[pages.defaultPage]}`,
+          || `${pagesURLs[pages.songsListPage]}`,
         replace: true,
       });
     }

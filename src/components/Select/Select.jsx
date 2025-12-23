@@ -14,6 +14,7 @@ const sizes = {
 const Select = ({
   disabled = false,
   disableUnderline = false,
+  displayEmpty = true,
   children,
   fullHeight = true,
   fullWidth = false,
@@ -28,6 +29,7 @@ const Select = ({
     <SelectMui
       disabled={disabled}
       disableUnderline={disableUnderline}
+      displayEmpty = {displayEmpty}
       fullWidth={fullWidth}
       MenuProps={{
         PaperProps: {
@@ -41,6 +43,7 @@ const Select = ({
         '.MuiSelect-select': {
           alignItems: 'center',
           display: 'flex',
+          width: '100px'
         },
       }}
       size={size}
