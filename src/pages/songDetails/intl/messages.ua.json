@@ -8,10 +8,11 @@
   "songDetails.label.album": "Альбом",
   "songDetails.label.year": "Рік релізу",
   "songDetails.label.genres": "Жанри",
+  "songDetails.label.streams": "Кількість прослуховувань",
   "songDetails.error.title": "Назва обов’язкова",
   "songDetails.error.artist": "Артист обов’язковий",
   "songDetails.error.duration": "Тривалість обов’язкова",
-  "songDetails.error.year": "Рік випуску обов’язковий",
+  "songDetails.error.releaseYear": "Рік випуску обов’язковий",
   "songDetails.error.genres": "Жанр обов’язковий",
   "songDetails.notif.successCreate": "Сутність успішно створена!",
   "songDetails.notif.successUpdate": "Сутність успішно відредагована!",
@@ -19,5 +20,6 @@
   "button.back": "Назад",
   "button.save": "Зберегти",
   "button.create": "Створити",
-  "button.cancel": "Скасувати"
+  "button.cancel": "Скасувати",
+  "songDetails.label.choose": "Виберіть"
 }

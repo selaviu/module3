@@ -8,10 +8,11 @@
   "songDetails.label.album": "Album",
   "songDetails.label.year": "Release Year",
   "songDetails.label.genres": "Genres",
+  "songDetails.label.streams": "Number of Streams",
   "songDetails.error.title": "Title is required",
   "songDetails.error.artist": "Artist is required",
   "songDetails.error.duration": "Duration is required",
-  "songDetails.error.year": "Release year is required",
+  "songDetails.error.releaseYear": "Release year is required",
   "songDetails.error.genres": "Genre is required",
   "songDetails.notif.successCreate": "Entity created successfully!",
   "songDetails.notif.successUpdate": "Entity updated successfully!",
@@ -19,5 +20,6 @@
   "button.back": "Back",
   "button.save": "Save",
   "button.create": "Create",
-  "button.cancel": "Cancel"
+  "button.cancel": "Cancel",
+  "songDetails.label.choose": "Choose"
 }

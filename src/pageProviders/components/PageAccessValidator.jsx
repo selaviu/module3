@@ -48,7 +48,7 @@ function PageAccessValidator({
         });
       } else if (!hasAccess) {
         changePage({
-          pathname: `${pagesURLs[pages.defaultPage]}`,
+          pathname: `${pagesURLs[pages.songsListPage]}`,
         });
       } else {
         setState(prevState => ({

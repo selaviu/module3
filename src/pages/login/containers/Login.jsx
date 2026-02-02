@@ -1,54 +1,83 @@
-import { createUseStyles } from 'react-jss';
-import { useIntl } from 'react-intl';
-import useTheme from 'misc/hooks/useTheme';
-import Button from 'components/Button';
-import Card from 'components/Card';
-import CardActions from 'components/CardActions';
-import CardContent from 'components/CardContent';
-import CardTitle from 'components/CardTitle';
-import Dialog from 'components/Dialog';
-import IconButton from 'components/IconButton';
-import IconClose from 'components/icons/Close';
-import IconVisibilityOff from 'components/icons/VisibilityOff';
-import IconVisibilityOn from 'components/icons/VisibilityOn';
-import md5 from 'md5';
-import React, { useEffect, useState } from 'react';
-import TextField from 'components/TextField';
-import Typography from 'components/Typography';
+import { createUseStyles } from "react-jss";
+import { useIntl } from "react-intl";
+import useTheme from "misc/hooks/useTheme";
+import Button from "components/Button";
+import Card from "components/Card";
+import CardActions from "components/CardActions";
+import CardContent from "components/CardContent";
+import CardTitle from "components/CardTitle";
+import Dialog from "components/Dialog";
+import IconButton from "components/IconButton";
+import IconClose from "components/icons/Close";
+import IconVisibilityOff from "components/icons/VisibilityOff";
+import IconVisibilityOn from "components/icons/VisibilityOn";
+import md5 from "md5";
+import React, { useEffect, useState } from "react";
+import TextField from "components/TextField";
+import Typography from "components/Typography";
+import config from "config";
 
-import * as errorCodes from '../constants/errorCodes';
+import * as errorCodes from "../constants/errorCodes";
 
 const getClasses = createUseStyles((theme) => ({
   buttons: {
-    display: 'flex',
+    display: "flex",
     gap: `${theme.spacing(1)}px`,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   container: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   content: {
-    display: 'flex',
-    flexDirection: 'column',
+    display: "flex",
+    flexDirection: "column",
     gap: `${theme.spacing(2)}px`,
-    width: '300px',
+    width: "300px",
   },
   dialogContent: {
-    display: 'flex',
-    flexDirection: 'column',
+    display: "flex",
+    flexDirection: "column",
+    gap: `${theme.spacing(2)}px`,
+  },
+  separator: {
+    display: "flex",
+    alignItems: "center",
+    textAlign: "center",
+    margin: "20px 0",
+    width: "100%",
+  },
+
+  separatorLine: {
+    flex: 1,
+    height: "1px",
+    backgroundColor: "#fffff",
+  },
+
+  separatorText: {
+    margin: "0 15px",
+    color: "#8e8e8e",
+    fontSize: "14px",
+    textTransform: "lowercase",
+    fontFamily: "sans-serif",
+  },
+  buttonsContainer: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    width: "100%",
     gap: `${theme.spacing(2)}px`,
   },
 }));
 
 const errorTypes = {
-  EMPTY_SIGN_UP_EMAIL: 'EMPTY_SIGN_UP_EMAIL',
-  EMPTY_SIGN_UP_LOGIN: 'EMPTY_SIGN_UP_LOGIN',
-  EMPTY_SIGN_UP_PASSWORD: 'EMPTY_SIGN_UP_PASSWORD',
-  EMPTY_SIGN_UP_PASSWORD_CONFIRM: 'EMPTY_SIGN_UP_PASSWORD_CONFIRM',
-  INVALID_EMAIL: 'INVALID_EMAIL',
-  PASSWORDS_MISMATCHES: 'PASSWORDS_MISMATCHES',
+  EMPTY_SIGN_UP_EMAIL: "EMPTY_SIGN_UP_EMAIL",
+  EMPTY_SIGN_UP_LOGIN: "EMPTY_SIGN_UP_LOGIN",
+  EMPTY_SIGN_UP_PASSWORD: "EMPTY_SIGN_UP_PASSWORD",
+  EMPTY_SIGN_UP_PASSWORD_CONFIRM: "EMPTY_SIGN_UP_PASSWORD_CONFIRM",
+  INVALID_EMAIL: "INVALID_EMAIL",
+  PASSWORDS_MISMATCHES: "PASSWORDS_MISMATCHES",
 };
 
 const isEmail = (text) => {
@@ -56,8 +85,12 @@ const isEmail = (text) => {
   return re.test(text.toLowerCase());
 };
 
+const handleLogin = () => {
+  window.location.href = config.GOOGLE_AUTH_URL;
+};
+
 function Login({
-  errors, // [{ code: <string>, description: <string> }]
+  errors,
   isAutoSignInAfterSignUp = true,
   isFailedSignIn,
   isFailedSignUp,
@@ -70,33 +103,34 @@ function Login({
   const { theme } = useTheme();
   const classes = getClasses({ theme });
   const [state, setState] = useState({
-    emailOrLogin: '',
+    emailOrLogin: "",
     externalErrors: [],
-    password: '',
+    password: "",
     isShowPassword: false,
     isSignUpDialogOpened: false,
     signInValidationErrors: [],
-    signUpEmail: '',
-    signUpFirstName: '',
-    signUpLastName: '',
-    signUpLogin: '',
-    signUpPassword: '',
-    signUpPasswordConfirm: '',
+    signUpEmail: "",
+    signUpFirstName: "",
+    signUpLastName: "",
+    signUpLogin: "",
+    signUpPassword: "",
+    signUpPasswordConfirm: "",
     signUpValidationErrors: [],
   });
 
-  const onCancelSignUp = () => setState({
-    ...state,
-    externalErrors: [],
-    signUpEmail: '',
-    signUpFirstName: '',
-    signUpLastName: '',
-    signUpLogin: '',
-    signUpPassword: '',
-    signUpPasswordConfirm: '',
-    signUpValidationErrors: [],
-    isSignUpDialogOpened: false,
-  });
+  const onCancelSignUp = () =>
+    setState({
+      ...state,
+      externalErrors: [],
+      signUpEmail: "",
+      signUpFirstName: "",
+      signUpLastName: "",
+      signUpLogin: "",
+      signUpPassword: "",
+      signUpPasswordConfirm: "",
+      signUpValidationErrors: [],
+      isSignUpDialogOpened: false,
+    });
 
   const getSignUpValidationErrors = () => {
     const errors = [];
@@ -122,13 +156,15 @@ function Login({
 
   useEffect(() => {
     const errorCodeValues = Object.values(errorCodes);
-    const messages = errors.map(error => errorCodeValues.includes(error.code)
-      ? formatMessage({ id: `error.${error.code}` })
-      : error.description);
+    const messages = errors.map((error) =>
+      errorCodeValues.includes(error.code)
+        ? formatMessage({ id: `error.${error.code}` })
+        : error.description,
+    );
     setState({
       ...state,
       externalErrors: messages,
-    })
+    });
   }, [errors]);
 
   useEffect(() => {
@@ -147,98 +183,109 @@ function Login({
     <div className={classes.container}>
       <div className={classes.content}>
         <TextField
-          label={formatMessage({ id: 'field.loginOrEmail' })}
-          onChange={({ target }) => setState({
-            ...state,
-            emailOrLogin: target.value,
-          })}
+          label={formatMessage({ id: "field.loginOrEmail" })}
+          onChange={({ target }) =>
+            setState({
+              ...state,
+              emailOrLogin: target.value,
+            })
+          }
           value={state.emailOrLogin}
         />
         <TextField
-          AdornmentEnd={(
+          AdornmentEnd={
             <IconButton
               colorVariant="secondary"
-              onPress={() => setState({
-                ...state,
-                isShowPassword: true,
-              })}
-              onRelease={() => setState({
-                ...state,
-                isShowPassword: false,
-              })}
-            >
-              {state.isShowPassword
-                ? <IconVisibilityOn size={24} />
-                : <IconVisibilityOff size={24} />
+              onPress={() =>
+                setState({
+                  ...state,
+                  isShowPassword: true,
+                })
               }
+              onRelease={() =>
+                setState({
+                  ...state,
+                  isShowPassword: false,
+                })
+              }
+            >
+              {state.isShowPassword ? (
+                <IconVisibilityOn size={24} />
+              ) : (
+                <IconVisibilityOff size={24} />
+              )}
             </IconButton>
-          )}
-          label={formatMessage({ id: 'field.password' })}
-          inputType={state.isShowPassword ? 'text' : 'password'}
-          onChange={({ target }) => setState({
-            ...state,
-            password: target.value,
-          })}
+          }
+          label={formatMessage({ id: "field.password" })}
+          inputType={state.isShowPassword ? "text" : "password"}
+          onChange={({ target }) =>
+            setState({
+              ...state,
+              password: target.value,
+            })
+          }
           value={state.password}
         />
-        {isFailedSignIn && state.externalErrors.map(errorMessage => (
-          <Typography color="error">
-            {errorMessage}
-          </Typography>
-        ))}
-        <div className={classes.buttons}>
-          <Button
-            colorVariant="secondary"
-            onClick={() => setState({
-              ...state,
-              isSignUpDialogOpened: true,
-            })}
-            variant="secondary"
-          >
-            <Typography>
-              {formatMessage({ id: 'signUp' })}
-            </Typography>
-          </Button>
-          <Button
-            disabled={!state.emailOrLogin || !state.password}
-            isLoading={isFetchingSignIn}
-            onClick={() => {
-              const withEmail = isEmail(state.emailOrLogin);
-              onSignIn({
-                email: withEmail ? state.emailOrLogin : null,
-                login: withEmail ? null : state.emailOrLogin,
-                password: md5(state.password)
-              });
-            }}
-            variant="primary"
-          >
-            <Typography color="inherit">
-              <strong>
-                {formatMessage({ id: 'signIn' })}
-              </strong>
-            </Typography>
+        {isFailedSignIn &&
+          state.externalErrors.map((errorMessage) => (
+            <Typography color="error">{errorMessage}</Typography>
+          ))}
+        <div className={classes.buttonsContainer}>
+          <div className={classes.buttons}>
+            <Button
+              colorVariant="secondary"
+              onClick={() =>
+                setState({
+                  ...state,
+                  isSignUpDialogOpened: true,
+                })
+              }
+              variant="secondary"
+            >
+              <Typography>{formatMessage({ id: "signUp" })}</Typography>
+            </Button>
+            <Button
+              disabled={!state.emailOrLogin || !state.password}
+              isLoading={isFetchingSignIn}
+              onClick={() => {
+                const withEmail = isEmail(state.emailOrLogin);
+                onSignIn({
+                  email: withEmail ? state.emailOrLogin : null,
+                  login: withEmail ? null : state.emailOrLogin,
+                  password: md5(state.password),
+                });
+              }}
+              variant="primary"
+            >
+              <Typography color="inherit">
+                <strong>{formatMessage({ id: "signIn" })}</strong>
+              </Typography>
+            </Button>
+          </div>
+          <div className="separator">
+            <span className="separatorLine"></span>
+            <span className="separatorText">or</span>
+            <span className="separatorLine"></span>
+          </div>
+          <Button onClick={handleLogin}>
+            <Typography>Sign in with Google</Typography>
           </Button>
         </div>
       </div>
-      <Dialog
-        maxWidth="xs"
-        open={state.isSignUpDialogOpened}
-      >
+      <Dialog maxWidth="xs" open={state.isSignUpDialogOpened}>
         <Card>
           {isFailedSignUp && !!state.externalErrors.length && (
             <Card variant="error">
               <CardTitle>
-                {state.externalErrors.map(errorMessage => (
-                  <Typography color="error">
-                    {errorMessage}
-                  </Typography>
+                {state.externalErrors.map((errorMessage) => (
+                  <Typography color="error">{errorMessage}</Typography>
                 ))}
               </CardTitle>
             </Card>
           )}
           <CardTitle>
             <Typography variant="subTitle">
-              {formatMessage({ id: 'signUp' })}
+              {formatMessage({ id: "signUp" })}
             </Typography>
             <IconButton onClick={onCancelSignUp}>
               <IconClose size={24} />
@@ -247,18 +294,24 @@ function Login({
           <CardContent>
             <div className={classes.dialogContent}>
               <TextField
-                helperText={state.signUpValidationErrors
-                  .includes(errorTypes.EMPTY_SIGN_UP_LOGIN)
-                && formatMessage({
-                  id: `signUp.error.${errorTypes.EMPTY_SIGN_UP_LOGIN}`,
-                })}
-                isError={state.signUpValidationErrors
-                  .includes(errorTypes.EMPTY_SIGN_UP_LOGIN)}
-                label={formatMessage({ id: 'field.login' })}
-                onChange={({ target }) => setState({
-                  ...state,
-                  signUpLogin: target.value,
-                })}
+                helperText={
+                  state.signUpValidationErrors.includes(
+                    errorTypes.EMPTY_SIGN_UP_LOGIN,
+                  ) &&
+                  formatMessage({
+                    id: `signUp.error.${errorTypes.EMPTY_SIGN_UP_LOGIN}`,
+                  })
+                }
+                isError={state.signUpValidationErrors.includes(
+                  errorTypes.EMPTY_SIGN_UP_LOGIN,
+                )}
+                label={formatMessage({ id: "field.login" })}
+                onChange={({ target }) =>
+                  setState({
+                    ...state,
+                    signUpLogin: target.value,
+                  })
+                }
                 required
                 value={state.signUpLogin}
               />
@@ -267,79 +320,96 @@ function Login({
                   errorTypes.EMPTY_SIGN_UP_EMAIL,
                   errorTypes.INVALID_EMAIL,
                 ]
-                  .filter(errorType => state.signUpValidationErrors
-                    .includes(errorType))
-                  .map(errorType => formatMessage({
-                    id: `signUp.error.${errorType}`
-                  }))
-                  .join('; ')}
+                  .filter((errorType) =>
+                    state.signUpValidationErrors.includes(errorType),
+                  )
+                  .map((errorType) =>
+                    formatMessage({
+                      id: `signUp.error.${errorType}`,
+                    }),
+                  )
+                  .join("; ")}
                 isError={[
                   errorTypes.EMPTY_SIGN_UP_EMAIL,
                   errorTypes.INVALID_EMAIL,
-                ].some(errorType => state.signUpValidationErrors
-                  .includes(errorType))}
-                label={formatMessage({ id: 'field.email' })}
-                onChange={({ target }) => setState({
-                  ...state,
-                  signUpEmail: target.value,
-                })}
+                ].some((errorType) =>
+                  state.signUpValidationErrors.includes(errorType),
+                )}
+                label={formatMessage({ id: "field.email" })}
+                onChange={({ target }) =>
+                  setState({
+                    ...state,
+                    signUpEmail: target.value,
+                  })
+                }
                 required
                 value={state.signUpEmail}
               />
               <TextField
-                label={formatMessage({ id: 'field.firstName' })}
-                onChange={({ target }) => setState({
-                  ...state,
-                  signUpFirstName: target.value,
-                })}
+                label={formatMessage({ id: "field.firstName" })}
+                onChange={({ target }) =>
+                  setState({
+                    ...state,
+                    signUpFirstName: target.value,
+                  })
+                }
                 value={state.signUpFirstName}
               />
               <TextField
-                label={formatMessage({ id: 'field.lastName' })}
-                onChange={({ target }) => setState({
-                  ...state,
-                  signUpLastName: target.value,
-                })}
+                label={formatMessage({ id: "field.lastName" })}
+                onChange={({ target }) =>
+                  setState({
+                    ...state,
+                    signUpLastName: target.value,
+                  })
+                }
                 value={state.signUpLastName}
               />
               <TextField
-                AdornmentEnd={(
+                AdornmentEnd={
                   <IconButton
                     colorVariant="secondary"
-                    onPress={() => setState({
-                      ...state,
-                      isShowPassword: true,
-                    })}
-                    onRelease={() => setState({
-                      ...state,
-                      isShowPassword: false,
-                    })}
-                  >
-                    {state.isShowPassword
-                      ? <IconVisibilityOn size={24} />
-                      : <IconVisibilityOff size={24} />
+                    onPress={() =>
+                      setState({
+                        ...state,
+                        isShowPassword: true,
+                      })
                     }
+                    onRelease={() =>
+                      setState({
+                        ...state,
+                        isShowPassword: false,
+                      })
+                    }
+                  >
+                    {state.isShowPassword ? (
+                      <IconVisibilityOn size={24} />
+                    ) : (
+                      <IconVisibilityOff size={24} />
+                    )}
                   </IconButton>
+                }
+                helperText={[errorTypes.EMPTY_SIGN_UP_PASSWORD]
+                  .filter((errorType) =>
+                    state.signUpValidationErrors.includes(errorType),
+                  )
+                  .map((errorType) =>
+                    formatMessage({
+                      id: `signUp.error.${errorType}`,
+                    }),
+                  )
+                  .join("; ")}
+                label={formatMessage({ id: "field.password" })}
+                inputType={state.isShowPassword ? "text" : "password"}
+                isError={[errorTypes.EMPTY_SIGN_UP_PASSWORD].some((errorType) =>
+                  state.signUpValidationErrors.includes(errorType),
                 )}
-                helperText={[
-                  errorTypes.EMPTY_SIGN_UP_PASSWORD,
-                ]
-                  .filter(errorType => state.signUpValidationErrors
-                    .includes(errorType))
-                  .map(errorType => formatMessage({
-                    id: `signUp.error.${errorType}`
-                  }))
-                  .join('; ')}
-                label={formatMessage({ id: 'field.password' })}
-                inputType={state.isShowPassword ? 'text' : 'password'}
-                isError={[
-                  errorTypes.EMPTY_SIGN_UP_PASSWORD,
-                ].some(errorType => state.signUpValidationErrors
-                  .includes(errorType))}
-                onChange={({ target }) => setState({
-                  ...state,
-                  signUpPassword: target.value,
-                })}
+                onChange={({ target }) =>
+                  setState({
+                    ...state,
+                    signUpPassword: target.value,
+                  })
+                }
                 required
                 value={state.signUpPassword}
               />
@@ -348,23 +418,29 @@ function Login({
                   errorTypes.EMPTY_SIGN_UP_PASSWORD_CONFIRM,
                   errorTypes.PASSWORDS_MISMATCHES,
                 ]
-                  .filter(errorType => state.signUpValidationErrors
-                    .includes(errorType))
-                  .map(errorType => formatMessage({
-                    id: `signUp.error.${errorType}`
-                  }))
-                  .join('; ')}
-                label={formatMessage({ id: 'field.passwordConfirm' })}
+                  .filter((errorType) =>
+                    state.signUpValidationErrors.includes(errorType),
+                  )
+                  .map((errorType) =>
+                    formatMessage({
+                      id: `signUp.error.${errorType}`,
+                    }),
+                  )
+                  .join("; ")}
+                label={formatMessage({ id: "field.passwordConfirm" })}
                 inputType="password"
                 isError={[
                   errorTypes.EMPTY_SIGN_UP_PASSWORD_CONFIRM,
                   errorTypes.PASSWORDS_MISMATCHES,
-                ].some(errorType => state.signUpValidationErrors
-                  .includes(errorType))}
-                onChange={({ target }) => setState({
-                  ...state,
-                  signUpPasswordConfirm: target.value,
-                })}
+                ].some((errorType) =>
+                  state.signUpValidationErrors.includes(errorType),
+                )}
+                onChange={({ target }) =>
+                  setState({
+                    ...state,
+                    signUpPasswordConfirm: target.value,
+                  })
+                }
                 required
                 value={state.signUpPasswordConfirm}
               />
@@ -376,9 +452,7 @@ function Login({
               onClick={onCancelSignUp}
               variant="secondary"
             >
-              <Typography>
-                {formatMessage({ id: 'btn.cancel' })}
-              </Typography>
+              <Typography>{formatMessage({ id: "btn.cancel" })}</Typography>
             </Button>
             <Button
               isLoading={isFetchingSignUp}
@@ -401,9 +475,7 @@ function Login({
               variant="primary"
             >
               <Typography color="inherit">
-                <strong>
-                  {formatMessage({ id: 'btn.signUp.apply' })}
-                </strong>
+                <strong>{formatMessage({ id: "btn.signUp.apply" })}</strong>
               </Typography>
             </Button>
           </CardActions>

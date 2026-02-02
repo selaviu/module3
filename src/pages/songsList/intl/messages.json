@@ -15,5 +15,6 @@
   "delete.confirmation.title": "Delete Confirmation",
   "delete.confirmation.text": "Are you sure you want to delete ",
   "alert.delete.success": "Song deleted successfully!",
-  "alert.delete.error": "Error occurred while deleting the song."
+  "alert.delete.error": "Error occurred while deleting the song.",
+  "download.csv": "Download CSV"
 }

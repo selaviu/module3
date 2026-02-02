@@ -34,8 +34,13 @@ function App() {
     componentDidMount: false,
   });
 
+  const [user, setUser] = useState(null);
+  // const [isAuthorized, setIsAuthorized] = useState(false);
+  
+
   const {
     errors,
+    isAuthorized,
     isFailedSignIn,
     isFailedSignUp,
     isFetchingSignIn,

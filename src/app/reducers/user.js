@@ -9,28 +9,29 @@ import {
   REQUEST_USER,
   SUCCESS_SIGN_IN,
   SUCCESS_SIGN_UP,
-} from '../constants/actionTypes';
+} from "../constants/actionTypes";
 
 const initialState = {
   authorities: [],
-  firstName: '',
-  email: '',
+  firstName: "",
+  email: "",
   errors: [],
-  id: '',
+  id: "",
   isAuthorized: false,
   isFailedSignIn: false,
   isFailedSignUp: false,
   isFetchingSignIn: false,
   isFetchingSignUp: false,
   isFetchingUser: false,
-  lastName: '',
-  login: '',
+  lastName: "",
+  login: "",
 };
 
-const convertErrors = errors => errors.map(error => ({
-  code: error.code,
-  description: error.description,
-}));
+const convertErrors = (errors) =>
+  errors.map((error) => ({
+    code: error.code,
+    description: error.description,
+  }));
 
 export default function Reducer(state = initialState, action) {
   switch (action.type) {
@@ -51,6 +52,19 @@ export default function Reducer(state = initialState, action) {
         isFetchingSignUp: false,
       };
     }
+    case "USER_FETCH_SUCCESS":
+      return {
+        ...state,
+        isAuthorized: true,
+        name: action.payload.name,
+        isFetchingUser: false,
+      };
+    case "USER_FETCH_UNAUTHORIZED":
+      return {
+        ...state,
+        isAuthorized: false,
+        isFetchingUser: false,
+      };
 
     case RECEIVE_USER:
     case SUCCESS_SIGN_IN: {
@@ -88,7 +102,7 @@ export default function Reducer(state = initialState, action) {
         errors: initialState.errors,
         isFailedSignIn: false,
         isFetchingSignIn: true,
-      }
+      };
     }
 
     case REQUEST_USER: {
@@ -104,7 +118,7 @@ export default function Reducer(state = initialState, action) {
         errors: initialState.errors,
         isFetchingSignUp: true,
         isFailedSignUp: false,
-      }
+      };
     }
 
     default: {

@@ -15,5 +15,6 @@
   "delete.confirmation.title": "Підтвердження видалення",
   "delete.confirmation.text": "Ви впевнені, що хочете видалити пісню ",
   "alert.delete.success": "Пісню успішно видалено!",
-  "alert.delete.error": "Сталася помилка при видаленні пісні."
+  "alert.delete.error": "Сталася помилка при видаленні пісні.",
+  "download.csv": "Завантажити CSV"
 }
