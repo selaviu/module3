@@ -27,7 +27,12 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          docker build -t europe-central2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/microservices-repo/frontend-app:${{ github.sha }} .
+          docker build \
+            --build-arg REACT_APP_USERS_SERVICE="http://34.116.141.50.nip.io" \
+            --build-arg REACT_APP_SONGS_SERVICE="http://34.116.141.50.nip.io" \
+            --build-arg REACT_APP_GOOGLE_AUTH_URL="http://34.116.141.50.nip.io/oauth2/authorization/google" \
+            -t europe-central2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/microservices-repo/frontend-app:${{ github.sha }} .
+
           docker push europe-central2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/microservices-repo/frontend-app:${{ github.sha }}
 
       - name: Deploy to GKE
