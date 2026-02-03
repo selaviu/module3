@@ -25,6 +25,8 @@ import Header from '../components/Header';
 import IntlProvider from '../components/IntlProvider';
 import MissedPage from '../components/MissedPage';
 import SearchParamsConfigurator from '../components/SearchParamsConfigurator';
+import SongsList from 'pageProviders/SongsList';
+import SongDetails from 'pageProviders/SongDetails';
 
 function App() {
   const dispatch = useDispatch();
@@ -32,8 +34,13 @@ function App() {
     componentDidMount: false,
   });
 
+  const [user, setUser] = useState(null);
+  // const [isAuthorized, setIsAuthorized] = useState(false);
+  
+
   const {
     errors,
+    isAuthorized,
     isFailedSignIn,
     isFailedSignUp,
     isFetchingSignIn,
@@ -78,6 +85,14 @@ function App() {
                     <Route
                       element={<SecretPage />}
                       path={`${pageURLs[pages.secretPage]}`}
+                    />
+                    <Route
+                      element={<SongsList />}
+                      path={`${pageURLs[pages.songsListPage]}`}
+                    />
+                    <Route
+                      element={<SongDetails />}
+                      path={`${pageURLs[pages.songDetailsPage]}`}
                     />
                     <Route
                       element={(

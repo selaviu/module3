@@ -1,0 +1,20 @@
+{
+  "title": "Список пісень",
+  "filter": "Фільтр",
+  "hideFilter": "Приховати фільтри",
+  "addSong": "Додати пісню",
+  "apply": "Застосувати",
+  "duration": "ТРИВАЛІСТЬ",
+  "genre": "ЖАНР",
+  "genre.all": "Усі жанри",
+  "sort.none": "Без сортування",
+  "sort.desc": "За спаданням",
+  "sort.asc": "За зростанням",
+  "btn.cancel": "Скасувати",
+  "btn.delete": "Видалити",
+  "delete.confirmation.title": "Підтвердження видалення",
+  "delete.confirmation.text": "Ви впевнені, що хочете видалити пісню ",
+  "alert.delete.success": "Пісню успішно видалено!",
+  "alert.delete.error": "Сталася помилка при видаленні пісні.",
+  "download.csv": "Завантажити CSV"
+}

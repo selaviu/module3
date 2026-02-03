@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend-container
+          image: europe-central2-docker.pkg.dev/lithe-aileron-486115-t3/microservices-repo/frontend-app:v3
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+          env:
+            - name: REACT_APP_USERS_SERVICE
+              value: "http://34.116.141.50.nip.io"
+            - name: REACT_APP_SONGS_SERVICE
+              value: "http://34.116.141.50.nip.io"
+            - name: REACT_APP_UI_URL_PREFIX
+              value: ""
+            - name: REACT_APP_GOOGLE_AUTH_URL
+              value: "http://34.116.141.50.nip.io/oauth2/authorization/google"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-svc
+spec:
+  selector:
+    app: frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

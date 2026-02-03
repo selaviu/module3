@@ -1,0 +1,46 @@
+name: Deploy Frontend to GKE
+
+on:
+  push:
+    branches:
+      - realization-task
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - id: "auth"
+        uses: "google-github-actions/auth@v1"
+        with:
+          credentials_json: "${{ secrets.GCP_SA_KEY }}"
+
+      - name: "Set up Cloud SDK"
+        uses: "google-github-actions/setup-gcloud@v1"
+        with:
+          install_components: "gke-gcloud-auth-plugin"
+
+      - name: Configure Docker
+        run: gcloud auth configure-docker europe-central2-docker.pkg.dev
+
+      - name: Build and Push Docker Image
+        run: |
+          docker build \
+            --build-arg REACT_APP_USERS_SERVICE="http://34.116.141.50.nip.io" \
+            --build-arg REACT_APP_SONGS_SERVICE="http://34.116.141.50.nip.io" \
+            --build-arg REACT_APP_GOOGLE_AUTH_URL="http://34.116.141.50.nip.io/oauth2/authorization/google" \
+            -t europe-central2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/microservices-repo/frontend-app:${{ github.sha }} .
+
+          docker push europe-central2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/microservices-repo/frontend-app:${{ github.sha }}
+
+      - name: Deploy to GKE
+        run: |
+          gcloud container clusters get-credentials music-cluster --region europe-central2 --project ${{ secrets.GCP_PROJECT_ID }}
+
+          # Оновлюємо образ у деплойменті frontend-deployment
+          kubectl set image deployment/frontend-deployment frontend-container=europe-central2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/microservices-repo/frontend-app:${{ github.sha }}
+
+          # Перевірка статусу оновлення
+          kubectl rollout status deployment/frontend-deployment

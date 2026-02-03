@@ -7,7 +7,9 @@ import rootReducer from './reducers';
 
 const store = configureStore(rootReducer);
 export default function Index() {
+  
   return (
+    
     <Provider store={store} >
       <App />
     </Provider>

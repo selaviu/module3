@@ -1,0 +1,20 @@
+{
+  "title": "Song List",
+  "filter": "Filter",
+  "hideFilter": "Hide Filters",
+  "addSong": "Add Song",
+  "apply": "Apply",
+  "duration": "DURATION",
+  "genre": "GENRE",
+  "genre.all": "All Genres",
+  "sort.none": "No sorting",
+  "sort.desc": "Descending",
+  "sort.asc": "Ascending",
+  "btn.cancel": "Cancel",
+  "btn.delete": "Delete",
+  "delete.confirmation.title": "Delete Confirmation",
+  "delete.confirmation.text": "Are you sure you want to delete ",
+  "alert.delete.success": "Song deleted successfully!",
+  "alert.delete.error": "Error occurred while deleting the song.",
+  "download.csv": "Download CSV"
+}
